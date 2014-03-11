@@ -188,6 +188,10 @@ Pythia8Hadronizer::Pythia8Hadronizer(const edm::ParameterSet &params) :
   //
   if( params.exists( "reweightGen" ) )
     fReweightUserHook = new PtHatReweightUserHook();
+  else if( params.exists( "reweightGenRap" ) )
+    fReweightUserHook = new RapReweightUserHook();
+  else if( params.exists( "reweightGenPtHatRap" ) )
+    fReweightUserHook = new PtHatRapReweightUserHook();
 
   if( params.exists( "useUserHook" ) )
     throw edm::Exception(edm::errors::Configuration,"Pythia8Interface")
