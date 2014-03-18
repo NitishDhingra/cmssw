@@ -189,9 +189,27 @@ Pythia8Hadronizer::Pythia8Hadronizer(const edm::ParameterSet &params) :
   if( params.exists( "reweightGen" ) )
     fReweightUserHook = new PtHatReweightUserHook();
   else if( params.exists( "reweightGenRap" ) )
-    fReweightUserHook = new RapReweightUserHook();
+  {
+    edm::ParameterSet rgrParams =
+      params.getParameter<edm::ParameterSet>("reweightGenRap");
+    fReweightUserHook = new RapReweightUserHook(rgrParams.getParameter<std::string>("yLabSigmaFunc"),
+                                                rgrParams.getParameter<double>("yLabPower"),
+                                                rgrParams.getParameter<std::string>("yCMSigmaFunc"),
+                                                rgrParams.getParameter<double>("yCMPower"),
+                                                rgrParams.getParameter<double>("pTHatMin"),
+                                                rgrParams.getParameter<double>("pTHatMax"));
+  }
   else if( params.exists( "reweightGenPtHatRap" ) )
-    fReweightUserHook = new PtHatRapReweightUserHook();
+  {
+    edm::ParameterSet rgrParams =
+      params.getParameter<edm::ParameterSet>("reweightGenPtHatRap");
+    fReweightUserHook = new PtHatRapReweightUserHook(rgrParams.getParameter<std::string>("yLabSigmaFunc"),
+                                                     rgrParams.getParameter<double>("yLabPower"),
+                                                     rgrParams.getParameter<std::string>("yCMSigmaFunc"),
+                                                     rgrParams.getParameter<double>("yCMPower"),
+                                                     rgrParams.getParameter<double>("pTHatMin"),
+                                                     rgrParams.getParameter<double>("pTHatMax"));
+  }
 
   if( params.exists( "useUserHook" ) )
     throw edm::Exception(edm::errors::Configuration,"Pythia8Interface")
